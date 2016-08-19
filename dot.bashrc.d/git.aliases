@@ -1,0 +1,18 @@
+# Git aliases for bash
+# Some copied or inspired from the following
+# https://gist.github.com/mwhite/6887990
+# https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks
+# http://blogs.atlassian.com/2014/10/advanced-git-aliases/
+# http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+# http://www.catonmat.net/blog/git-aliases/
+
+alias gs='git status --branch'
+alias gss='git status --branch --short'
+alias gb='git branch'
+alias gl='git log'
+alias glo='git log --oneline'
+alias gr='git remote'
+alias grv='git remote -v ; git branch --list --remotes'
+alias gd='git diff'
+alias gco='git checkout'
+alias gcaa='git commit -a --amend -C HEAD'

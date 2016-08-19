@@ -1,0 +1,15 @@
+# For Mac csshX
+# Only works on Mac Darwin
+[[ $(uname -s) =~ Darwin ]] || return 0
+
+alias cssh='csshX'
+
+_complete_csshx () {
+        COMPREPLY=()
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        host_list=$( sed -n 's/^clusters[[:space:]]=[[:space:]]//p' ~/.csshrc )
+        COMPREPLY=( $(compgen -W "${host_list}" -- $cur))
+        return 0
+}
+complete -F _complete_csshx csshX
+complete -F _complete_csshx cssh
