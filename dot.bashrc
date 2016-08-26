@@ -18,13 +18,15 @@ function fn_source_contents() {
             for YYY in $( find "$ZZZ" -type f ) ; do
                 fn_source_file "$YYY"
             done
+        elif [[ -f "$ZZZ" ]]; then
+            fn_source_file "$ZZZ"
         fi
     done
 }
 # Enable bash completion in interactive shells
-if ! shopt -oq posix; then
+if ! shopt -oq posix ; then
     # This works even on Linux, since $(brew --prefix) returns null string there
-    fn_source_file $(brew --prefix)/etc/bash_completion
+    fn_source_file $(brew --prefix 2>/dev/null)/etc/bash_completion
 fi
 # Source user-specific bash-completion files and dirs
 fn_source_contents ~/.bash-completion ~/.bashrc.d
@@ -63,9 +65,9 @@ alias ..='cd ..'
 alias path='echo -e ${PATH//:/\\n}'
 alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 # More legible output for du and df
-alias du='du -kh'
+alias du='du -d 1 -m'
 alias df='df -kTh'
 
 # Now we construct the prompt.
 export PROMPT_DIRTRIM=6
-PROMPT_COMMAND="history -a"
+export PROMPT_COMMAND="history -a"

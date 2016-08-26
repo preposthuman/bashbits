@@ -1,7 +1,7 @@
 # Set architecture flags
 export ARCHFLAGS="-arch $(uname -m)"
 # Ensure user-installed binaries take precedence
-export PATH=/usr/local/bin:$PATH
+export PATH="/usr/local/bin:${PATH}"
 
 # History things
 export HISTIGNORE="&:bg:fg:ll:ls:h:history"
@@ -40,7 +40,7 @@ case $(uname -s) in
     ( Linux )
         shopt -s autocd
         shopt -s globstar
-    ( * ) ;;
+        ;;
 esac
 
 # Load .bashrc if it exists
