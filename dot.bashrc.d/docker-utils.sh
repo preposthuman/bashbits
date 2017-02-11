@@ -5,6 +5,11 @@
 [ -w /var/run/docker.sock ] && CMD_PREFIX="" || CMD_PREFIX="sudo "
 DOCKER_CMD="${CMD_PREFIX}docker"
 
+# Cleanup dangling images
+function docker-cleanup {
+    $DOCKER_CMD images -f 'dangling=true' -q | xargs -r $DOCKER_CMD rmi
+}
+
 # List volumes in use by some container (emit volume ids)
 function volumes-used {
     $DOCKER_CMD inspect $($DOCKER_CMD ps -aq) | jq -r '[.[] | .Mounts | map(select(has("Name")))] | add | map(.Name) | .[]' | sort -u
