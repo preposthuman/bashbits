@@ -36,6 +36,7 @@ case $(uname -s) in
     ( Darwin ) alias ls='ls -hFG' ;;
     ( Linux )  alias ls='ls -hF --color' ;;
 esac
+## Uncomment ones you actually use
 alias ll='ls -Al'
 alias l.='ls -d .*'        # Show hidden files
 alias lx='ls -lXB'         # Sort by extension
@@ -43,9 +44,8 @@ alias lk='ls -lSr'         # Sort by size, biggest last
 alias lt='ls -ltr'         # Sort by date, most recent last
 alias lc='ls -ltcr'        # Sort by/show change time, most recent last
 alias lu='ls -ltur'        # Sort by/show access time, most recent last
-alias lm='ll |more'        # Pipe through 'more'
-alias lr='ll -R'           # Recursive ls
-alias tree='tree -Csuh'    # Nice alternative to 'recursive ls'
+#alias lm='ll |more'        # Pipe through 'more'
+#alias lr='ll -R'           # Recursive ls
 
 ## Colorize the grep command output for ease of use (good for log files)##
 alias grep='grep --color=auto'
@@ -53,6 +53,8 @@ alias egrep='grep -E --color=auto'
 alias fgrep='grep -F --color=auto'
 # Start bc with math support
 alias bc='bc --mathlib'
+# Make tree pretty. Nice alternative to 'recursive ls'
+which tree >/dev/null && alias tree='tree -Csuh'
 # Colorize diff output
 which colordiff >/dev/null && alias diff='colordiff'
 # Resume wget by default
@@ -65,8 +67,8 @@ alias ..='cd ..'
 alias path='echo -e ${PATH//:/\\n}'
 alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 # More legible output for du and df
-alias du='du -d 1 -m'
-alias df='df -kTh'
+alias mydu='du -d 1 -m'
+alias mydf='df -kTh'
 
 # Now we construct the prompt.
 export PROMPT_DIRTRIM=6
