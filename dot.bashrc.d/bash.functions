@@ -9,43 +9,54 @@ function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
 
 # Pretty-print of 'df' output
-# Inspired by 'dfc' utility
-function ppdf()
-{
-    for fs ; do
-        if [ ! -d $fs ]; then
-            echo -e $fs": No such file or directory" ; continue
-        fi
-
-        local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-        local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-        local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-        local out="["
-        for ((j=0;j<20;j++)); do
-            if [ ${j} -lt ${nbstars} ]; then
-               out=$out"*"
-            else
-               out=$out"-"
-            fi
-        done
-        out=${info[2]}" "$out"] ("$free" free on "$fs")"
-        echo -e $out
-    done
+function ppdf() {
+    command df $* | awk '
+    BEGIN {
+        # Only works in gawk
+        PROCINFO["sorted_in"] = "@ind_str_asc"
+        mnt_sz = length("Mount")
+        cap_sz = length("Capacity")
+    }
+    NR==1 {
+        for(i = 1; i <= NF; i++) {
+            if($i == "Capacity") { cap = i }
+            if($i == "Mounted") { mount = i }
+        }
+    }
+    NR>1 {
+        if($1 == "map") {
+            marr[$NF] = $2
+            if(length($NF) > mnt_sz) { mnt_sz = length($NF) }
+        }
+        else {
+            carr[$mount] = $cap
+            if(length($mount) > mnt_sz) { mnt_sz = length($mount) }
+        }
+    }
+    END {
+        print sprintf("%-*s", mnt_sz, "Mount"), "Capacity"
+        for(x in carr) {
+            printf("%-*s %4s\n", mnt_sz, x, carr[x])
+        }
+        for(y in marr) {
+            printf("%-*s is map %s\n", mnt_sz, y, marr[y])
+        }
+    }'
 }
 # Get IP adress on ethernet.
 function my_ip() {
-    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' | sed -e s/addr://)
+    local MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' | sed -e s/addr://)
     echo ${MY_IP:-"Not connected"}
 }
 # Get current host related info.
 function ii() {
-    echo -e "\nYou are logged on ${BRed}$HOST"
+    echo -e "\nYou are logged on ${BRed}$HOSTNAME"
     echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
     echo -e "\n${BRed}Users logged on:$NC " ; w -hs | cut -d " " -f1 | sort | uniq
     echo -e "\n${BRed}Current date :$NC " ; date +%F_%T
     echo -e "\n${BRed}Machine stats :$NC " ; uptime
     echo -e "\n${BRed}Memory stats :$NC " ; free
-    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+    echo -e "\n${BRed}Diskspace :$NC " ; ppdf / $HOME
     echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
     echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
     echo
