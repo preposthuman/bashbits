@@ -36,7 +36,7 @@ PS1=${debian_chroot:+($debian_chroot)}
 # Adds some text in the terminal frame (if applicable)
 function xtitle() {
     case "$TERM" in
-    (*term* | rxvt) echo -en  "\e]0;$*\a" ;;
+    (*term* | rxvt) echo -en  "\033]0;$*\a" ;;
     (*)  ;;
     esac
 }
