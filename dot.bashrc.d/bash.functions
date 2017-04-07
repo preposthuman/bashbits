@@ -69,3 +69,13 @@ function ask() {
         (*) return 1 ;;
     esac
 }
+# My own creation
+function compare_across_machines() {
+    # You can also use it like:
+    # M_ONE=foo.thing.com M_TWO=bar.thing.com compare_across_machines 'cat some_file_name.txt'
+    # if you want to change the STMT frequently instead of the pairs of machines
+    [ -z "$STMT" ]  && local -r STMT="$1"
+    [ -z "$M_ONE" ] && local -r M_ONE="$2"
+    [ -z "$M_TWO" ] && local -r M_TWO="$3"
+    diff -y <( ssh -nXY $M_ONE "$STMT" ) <( ssh -nXY $M_TWO "$STMT" )
+}
