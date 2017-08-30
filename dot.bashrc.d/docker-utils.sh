@@ -7,6 +7,7 @@ DOCKER_CMD="${CMD_PREFIX}docker"
 
 # Cleanup dangling images
 function docker-cleanup {
+    # docker images -f 'dangling=true' -q | xargs -r docker rmi
     $DOCKER_CMD images -f 'dangling=true' -q | xargs -r $DOCKER_CMD rmi
 }
 
