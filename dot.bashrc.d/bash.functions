@@ -52,7 +52,7 @@ function my_ip() {
 function ii() {
     echo -e "\nYou are logged on ${BRed}$HOSTNAME"
     echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
-    echo -e "\n${BRed}Users logged on:$NC " ; w -hs | cut -d " " -f1 | sort | uniq
+    echo -e "\n${BRed}Users logged on:$NC " ; w -hi | cut -d " " -f1 | sort | uniq
     echo -e "\n${BRed}Current date :$NC " ; date +%F_%T
     echo -e "\n${BRed}Machine stats :$NC " ; uptime
     echo -e "\n${BRed}Memory stats :$NC " ; free
