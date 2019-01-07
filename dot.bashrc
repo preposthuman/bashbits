@@ -55,6 +55,8 @@ alias fgrep='grep -F --color=auto'
 alias bc='bc --mathlib'
 # Make tree pretty. Nice alternative to 'recursive ls'
 which tree >/dev/null && alias tree='tree -Csuh'
+# Delete previous history entry, for when you type a password on the command line
+alias oops='history -d $(fc -l -1 | cut -f1)'
 # Colorize diff output
 which colordiff >/dev/null && alias diff='colordiff'
 # Resume wget by default
