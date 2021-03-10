@@ -72,6 +72,9 @@ alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 alias mydu='du -d 1 -m'
 alias mydf='df -kTh'
 
+# Suppress zsh shell warning on Mac
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # Now we construct the prompt.
 export PROMPT_DIRTRIM=6
 export PROMPT_COMMAND="history -a"
